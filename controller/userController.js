@@ -21,9 +21,7 @@ const createUser = asyncHandler(async (req, res) => {
       //encrypt
       password,
     });
-    res
-      .status(201)
-      .json({ message: "account successfully created", success: true });
+    res.status(201).json({ message: "account successfully created", success: true });
   }
 });
 const loginUser = asyncHandler(async (req, res) => {
@@ -36,12 +34,19 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new CustomError("User does not exist", 400);
   }
   // const token = jwt.sign({user?._id, user?.firstName, user?.surname},process.env.JWT_SECRETE, {expiresIn:'2d'})
-  res
-    .status(200)
-    .json({ message: "user successfully login", success: true, token });
+  res.status(200).json({ message: "user successfully login", success: true, token });
 });
+const getUserDetail = asyncHandler(async (req, res) => {
+  const { _id } = req.body;
+  const user = await User.findOne({ _id });
+  if (!user) {
+    throw new CustomError("Sorry, user not found", 400);
+  } else {
+  }
+});
+const logout = asyncHandler(async (req, res) => {});
 const updateUser = asyncHandler(async (req, res) => {
   const detail = req.body;
   const tokenHeaders = req.headers.authorization;
 });
-module.exports = { createUser, loginUser, updateUser };
+module.exports = { createUser, loginUser, updateUser, logout, getUserDetail };
