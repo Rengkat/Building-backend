@@ -1,9 +1,23 @@
 const mongoose = require("mongoose");
-const UserSchema = new mongoose.Schema({
-  firstName: { type: String, required: true },
-  surname: { type: String, required: true },
-  phone: { type: String, required: true, unique },
-  email: { type: String, required: true, unique },
-  password: { type: String, required: true },
+const bcrypt = require("bcryptjs");
+const UserSchema = new mongoose.Schema(
+  {
+    firstName: { type: String, required: true },
+    surname: { type: String, required: true },
+    phone: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+  },
+  { timestamps: true }
+);
+UserSchema.pre("save", async function (next) {
+  //hash password before saving
+  //the user here is the -> this
+  if (!this.isModified) {
+    next();
+  } else {
+    const salt = await bcrypt.genSalt(10); //number of rounds
+    this.password = await bcrypt.hash(this.password, salt); // on the user, which is this, all the model properties created can be found
+  }
 });
 module.exports = mongoose.model("User", UserSchema);
