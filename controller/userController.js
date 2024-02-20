@@ -1,10 +1,10 @@
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
+const generateToken = require("../utils/generateToken");
 // const bcyrpt = require('')
 const User = require("../model/userModel");
 const CustomError = require("../error/custom-error");
 const createUser = asyncHandler(async (req, res) => {
-  console.log(req.body);
   const { firstName, surname, phone, email, password } = req.body;
   if (!firstName || !surname || !phone || !email || !password) {
     throw new CustomError("Please enter fields", 400);
@@ -27,15 +27,18 @@ const createUser = asyncHandler(async (req, res) => {
 });
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+
   if (!email || !password) {
     throw new CustomError("Please enter all fields", 400);
   }
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email: { $regex: new RegExp(email, "i") } });
+
   if (!user) {
     throw new CustomError("User does not exist", 400);
   }
   // const token = jwt.sign({user?._id, user?.firstName, user?.surname},process.env.JWT_SECRETE, {expiresIn:'2d'})
-  res.status(200).json({ message: "user successfully login", success: true, token });
+  generateToken(res, user._id);
+  res.status(200).json({ message: "user successfully login", success: true });
 });
 const getUserDetail = asyncHandler(async (req, res) => {
   const { _id } = req.body;
