@@ -6,24 +6,24 @@ const CustomError = require("../error/custom-error");
 const createUser = asyncHandler(async (req, res) => {
   console.log(req.body);
   const { firstName, surname, phone, email, password } = req.body;
-  // if (!firstName || !surname || !phone || !email || !password) {
-  //   throw new CustomError("Please enter fields", 400);
-  // }
-  // //check if user exiswt first
-  // const userExist = await User.findOne({ email });
-  // if (userExist) {
-  //   throw new CustomError("User already exist", 400);
-  // } else {
-  //   const user = await User.create({
-  //     firstName,
-  //     surname,
-  //     phone,
-  //     email,
-  //     //encrypt
-  //     password,
-  //   });
-  //   res.status(201).json({ message: "account successfully created", success: true });
-  // }
+  if (!firstName || !surname || !phone || !email || !password) {
+    throw new CustomError("Please enter fields", 400);
+  }
+  //check if user exist first
+  const userExist = await User.findOne({ email });
+  if (userExist) {
+    throw new CustomError("User already exist", 400);
+  } else {
+    const user = await User.create({
+      firstName,
+      surname,
+      phone,
+      email,
+      //encrypt
+      password,
+    });
+    res.status(201).json({ message: "account successfully created", success: true });
+  }
 });
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;

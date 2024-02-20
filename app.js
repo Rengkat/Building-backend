@@ -1,6 +1,7 @@
 const express = require("express");
 const users = require("./router/usersRouter");
 const notFound = require("./middleware/notFound");
+const connectDB = require("./db/connectDB");
 const cors = require("cors");
 require("dotenv").config();
 
@@ -10,9 +11,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use("/api/user", users);
-// app.use(notFound());
-const start = () => {
+app.use(notFound);
+const start = async () => {
   try {
+    await connectDB(process.env.MONGO_URI);
     app.listen(port, () => console.log(`Starting on port ${port}`));
   } catch (error) {}
 };
