@@ -20,7 +20,7 @@ UserSchema.pre("save", async function (next) {
     this.password = await bcrypt.hash(this.password, salt); // on the user, which is this, all the model properties created can be found
   }
 });
-UserSchema.method.matchedPassword = async function (enteredPassword) {
+UserSchema.methods.matchedPassword = async function (enteredPassword) {
   //comparing the password
   return await bcrypt.compare(enteredPassword, this.password);
 };
