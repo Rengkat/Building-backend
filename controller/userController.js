@@ -59,6 +59,12 @@ const logout = asyncHandler(async (req, res) => {
 });
 const updateUser = asyncHandler(async (req, res) => {
   const detail = req.body;
-  const tokenHeaders = req.headers.authorization;
+  const token = req.cookies("token");
+  const userId = jwt.verify(token).userId;
+  // const tokenHeaders = req.headers.authorization;
+  const user = await User.findOneAndUpdate({ _id: userId }, detail);
+  if (!user) {
+    throw new CustomError("User not found", 401);
+  }
 });
 module.exports = { createUser, loginUser, updateUser, logout, getUserDetail };
