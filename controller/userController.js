@@ -46,7 +46,7 @@ const getUserDetail = asyncHandler(async (req, res) => {
   // if (!user) {
   //   throw new CustomError("Sorry, user not found", 400);
   // } else {
-  res.send(req.params);
+  console.log(req.params);
   // res.status(200).json({ success: true, userDetail: user });
   // }
 });
