@@ -42,13 +42,11 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 const getUserDetail = asyncHandler(async (req, res) => {
-  // const user = await User.findOne({ userId: _id });
-  // if (!user) {
-  //   throw new CustomError("Sorry, user not found", 400);
-  // } else {
-  console.log(req.params);
-  // res.status(200).json({ success: true, userDetail: user });
-  // }
+  const userId = req.user;
+  console.log(userId);
+  // const user = await User.findById(req.user.userId);
+  // console.log(user);
+  // const user = await User.findById(req);
 });
 const logout = asyncHandler(async (req, res) => {
   res.cookie("token", "", {

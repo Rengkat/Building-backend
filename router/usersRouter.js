@@ -11,5 +11,5 @@ const router = express.Router();
 router.route("/").post(createUser);
 router.route("/logout").post(logout);
 router.route("/login").post(loginUser);
-router.route("/:userId").put(protect, updateUser).get(protect, getUserDetail);
+router.route("/profile").put(protect, updateUser).get(protect, getUserDetail);
 module.exports = router;
