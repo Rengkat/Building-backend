@@ -42,11 +42,13 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 const getUserDetail = asyncHandler(async (req, res) => {
-  const userId = req.user;
-  console.log(userId);
-  // const user = await User.findById(req.user.userId);
-  // console.log(user);
-  // const user = await User.findById(req);
+  const user = {
+    userFirstName: req.user.firstName,
+    userSurname: req.user.surname,
+    phone: req.user.phone,
+    email: req.user.email,
+  };
+  res.status(200).json(user);
 });
 const logout = asyncHandler(async (req, res) => {
   res.cookie("token", "", {
