@@ -58,13 +58,21 @@ const logout = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "user logged out" });
 });
 const updateUser = asyncHandler(async (req, res) => {
-  const detail = req.body;
-  const token = req.cookies("token");
-  const userId = jwt.verify(token).userId;
-  // const tokenHeaders = req.headers.authorization;
-  const user = await User.findOneAndUpdate({ _id: userId }, detail);
-  if (!user) {
-    throw new CustomError("User not found", 401);
+  const user = await User.findById(req.user._id);
+  if (user) {
+    user.firstName = req.body.firstName || user.firstName;
+    user.surname = req.body.surname || user.surname;
+    user.phone = req.body.phone || user.phone;
+    //update user
+    const updatedUser = await user.save();
+    res.status(200).json({
+      _id: updatedUser._id,
+      firstName: updatedUser.firstName,
+      surname: updatedUser.surname,
+      phone: updatedUser.phone,
+    });
+  } else {
+    throw new CustomError("Sorry invalid user", 401);
   }
 });
 module.exports = { createUser, loginUser, updateUser, logout, getUserDetail };
