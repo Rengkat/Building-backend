@@ -6,6 +6,7 @@ const User = require("../model/userModel");
 const CustomError = require("../error/custom-error");
 const createUser = asyncHandler(async (req, res) => {
   const { firstName, surname, phone, email, password } = req.body;
+
   if (!firstName || !surname || !phone || !email || !password) {
     throw new CustomError("Please enter fields", 400);
   }
@@ -36,7 +37,11 @@ const loginUser = asyncHandler(async (req, res) => {
   if (user && (await user.matchedPassword(password))) {
     // const token = jwt.sign({user?._id, user?.firstName, user?.surname},process.env.JWT_SECRETE, {expiresIn:'2d'})
     generateToken(res, user._id);
-    res.status(200).json({ message: "user successfully login", success: true });
+    res.status(201).json({
+      message: "user successfully login",
+      success: true,
+      data: { _id: user._id, firstName: user.firstName, surname: user.surname, email: user.email },
+    });
   } else {
     throw new CustomError("Invalid email or password", 401);
   }
