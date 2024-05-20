@@ -1,7 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 const generateToken = require("../utils/generateToken");
-// const bcyrpt = require('')
 const User = require("../model/userModel");
 const CustomError = require("../error/custom-error");
 const createUser = asyncHandler(async (req, res) => {
@@ -29,23 +28,28 @@ const createUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
+  // Check if email and password are provided
   if (!email || !password) {
-    throw new CustomError("Please enter all fields", 400);
+    return res.status(400).json({ message: "Please enter all fields" });
   }
+
+  // Find the user by email (case insensitive)
   const user = await User.findOne({ email: { $regex: new RegExp(email, "i") } });
 
+  // Check if user exists and password matches
   if (user && (await user.matchedPassword(password))) {
-    // const token = jwt.sign({user?._id, user?.firstName, user?.surname},process.env.JWT_SECRETE, {expiresIn:'2d'})
-    generateToken(res, user._id);
-    res.status(201).json({
-      message: "user successfully login",
+    const token = generateToken(res, user._id);
+
+    return res.status(201).json({
+      message: "User successfully logged in",
       success: true,
-      data: { _id: user._id, firstName: user.firstName, surname: user.surname, email: user.email },
+      token,
     });
   } else {
-    throw new CustomError("Invalid email or password", 401);
+    return res.status(401).json({ message: "Invalid email or password" });
   }
 });
+
 const getUserDetail = asyncHandler(async (req, res) => {
   const user = {
     userFirstName: req.user.firstName,
