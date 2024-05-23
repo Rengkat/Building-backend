@@ -40,10 +40,15 @@ const loginUser = asyncHandler(async (req, res) => {
   if (user && (await user.matchedPassword(password))) {
     const token = generateToken(res, user._id);
 
+    // Construct the response with only the necessary fields
     return res.status(201).json({
       message: "User successfully logged in",
-      success: true,
+      ok: true,
       token,
+      user: {
+        firstName: user.firstName,
+        surname: user.surname,
+      },
     });
   } else {
     return res.status(401).json({ message: "Invalid email or password" });
