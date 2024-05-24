@@ -1,4 +1,5 @@
 const express = require("express");
+const protectedRoute = require("../middleware/authMiddleware");
 const {
   getAllCartProducts,
   getSingleCartProduct,
@@ -10,7 +11,7 @@ const route = express.Router();
 route.route("/userId").get(getAllCartProducts);
 route
   .route("/productId")
-  .get(getSingleCartProduct)
-  .patch(updateCartProduct)
-  .delete(deleteCartProduct);
+  .get(protectedRoute, getSingleCartProduct)
+  .patch(protectedRoute, updateCartProduct)
+  .delete(protectedRoute, deleteCartProduct);
 module.exports = route;

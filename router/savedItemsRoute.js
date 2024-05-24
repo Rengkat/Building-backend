@@ -1,4 +1,5 @@
 const express = require("express");
+const protectedRoute = require("../middleware/authMiddleware");
 const {
   getAllUserSaveProduct,
   getSingleUserSaveProduct,
@@ -6,5 +7,8 @@ const {
 } = require("../controller/savedItemsController");
 const router = express.Router();
 
-router.route("/").get(getAllUserSaveProduct);
-router.route("/:productId").get(getSingleUserSaveProduct).delete(deleteSaveProduct);
+router.route("/").get(protectedRoute, getAllUserSaveProduct);
+router
+  .route("/:productId")
+  .get(protectedRoute, getSingleUserSaveProduct)
+  .delete(protectedRoute, deleteSaveProduct);
