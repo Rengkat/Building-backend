@@ -13,3 +13,4 @@ route
   .get(getSingleCartProduct)
   .patch(updateCartProduct)
   .delete(deleteCartProduct);
+module.exports = route;
