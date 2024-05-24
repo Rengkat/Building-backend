@@ -1,7 +1,7 @@
-// models/cartItemModel.js
+// models/saved items
 const mongoose = require("mongoose");
 
-const cartItemSchema = new mongoose.Schema(
+const savedItemSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -13,15 +13,10 @@ const cartItemSchema = new mongoose.Schema(
       ref: "Product",
       required: true,
     },
-    quantity: {
-      type: Number,
-      required: true,
-      default: 1,
-    },
   },
   {
     timestamps: true,
   }
 );
 
-module.exports = mongoose.model("CartItem", cartItemSchema);
+module.exports = mongoose.model("SavedItem", savedItemSchemaItemSchema);

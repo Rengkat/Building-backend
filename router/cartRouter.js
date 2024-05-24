@@ -5,10 +5,11 @@ const {
   getSingleCartProduct,
   updateCartProduct,
   deleteCartProduct,
+  addCartProduct,
 } = require("../controller/cartController");
 const route = express.Router();
 
-route.route("/userId").get(getAllCartProducts);
+route.route("/userId").get(protectedRoute, getAllCartProducts).post(protectedRoute, addCartProduct);
 route
   .route("/productId")
   .get(protectedRoute, getSingleCartProduct)

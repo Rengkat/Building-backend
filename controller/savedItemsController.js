@@ -1,3 +1,4 @@
+const SavedItems = require("../model/savedItemsModel");
 const asyncHandler = require("express-async-handler");
 
 const getAllUserSaveProduct = asyncHandler(async (req, res) => {

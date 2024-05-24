@@ -7,10 +7,19 @@ const getAllCartProducts = asyncHandler(async (req, res) => {
 const getSingleCartProduct = asyncHandler(async (req, res) => {
   res.send("all single product");
 });
+const addCartProduct = asyncHandler(async (req, res) => {
+  res.send("all single product");
+});
 const deleteCartProduct = asyncHandler(async (req, res) => {
   res.send("all single product");
 });
 const updateCartProduct = asyncHandler(async (req, res) => {
   res.send("update cart product");
 });
-module.exports = { getAllCartProducts, getSingleCartProduct, deleteCartProduct, updateCartProduct };
+module.exports = {
+  addCartProduct,
+  getAllCartProducts,
+  getSingleCartProduct,
+  deleteCartProduct,
+  updateCartProduct,
+};
