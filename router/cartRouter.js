@@ -7,12 +7,15 @@ const {
   deleteCartProduct,
   addCartProduct,
 } = require("../controller/cartController");
-const route = express.Router();
+const router = express.Router();
 
-route.route("/userId").get(protectedRoute, getAllCartProducts).post(protectedRoute, addCartProduct);
-route
+router
+  .route("/userId")
+  .get(protectedRoute, getAllCartProducts)
+  .post(protectedRoute, addCartProduct);
+router
   .route("/productId")
   .get(protectedRoute, getSingleCartProduct)
   .patch(protectedRoute, updateCartProduct)
   .delete(protectedRoute, deleteCartProduct);
-module.exports = route;
+module.exports = router;

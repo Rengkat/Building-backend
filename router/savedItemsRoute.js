@@ -12,3 +12,4 @@ router
   .route("/:productId")
   .get(protectedRoute, getSingleUserSaveProduct)
   .delete(protectedRoute, deleteSaveProduct);
+module.exports = router;

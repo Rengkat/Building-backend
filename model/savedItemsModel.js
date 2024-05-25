@@ -1,7 +1,6 @@
-// models/saved items
 const mongoose = require("mongoose");
 
-const savedItemSchema = new mongoose.Schema(
+const SavedItemSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -19,4 +18,4 @@ const savedItemSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("SavedItem", savedItemSchemaItemSchema);
+module.exports = mongoose.model("SavedItem", SavedItemSchema);
