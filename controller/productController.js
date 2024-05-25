@@ -21,9 +21,9 @@ const deleteProduct = asyncHandler(async (req, res) => {
   const deletedProduct = await Product.findByIdAndDelete(req.params.productId);
 
   if (deletedProduct) {
-    res.status(200).json({ message: "Product deleted successfully", success: true });
+    return res.status(200).json({ message: "Product deleted successfully", success: true });
   } else {
-    res.status(404).json({ message: "Product not found", success: false });
+    return res.status(404).json({ message: "Product not found", success: false });
   }
 });
 const updateProduct = asyncHandler(async (req, res) => {
@@ -39,8 +39,8 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.brand = req.product.brand || product.brand;
     product.inStock = req.product.inStock || product.inStock;
     const updatedProduct = await product.save();
-    res.status(201).json({ updatedProduct, ok: true });
+    return res.status(201).json({ updatedProduct, ok: true });
   }
-  res.status(404).json({ message: "Product not found", success: false });
+  return res.status(404).json({ message: "Product not found", success: false });
 });
 module.exports = { getAllProducts, getSingleProduct, deleteProduct, updateProduct };
