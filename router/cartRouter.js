@@ -3,9 +3,9 @@ const protectedRoute = require("../middleware/authMiddleware");
 const {
   getAllCartProducts,
   getSingleCartProduct,
-  updateCartProduct,
   deleteCartProduct,
   addCartProduct,
+  updateProductQuantity,
 } = require("../controller/cartController");
 const router = express.Router();
 
@@ -16,6 +16,6 @@ router
 router
   .route("/productId")
   .get(protectedRoute, getSingleCartProduct)
-  .patch(protectedRoute, updateCartProduct)
+  .put(protectedRoute, updateProductQuantity)
   .delete(protectedRoute, deleteCartProduct);
 module.exports = router;

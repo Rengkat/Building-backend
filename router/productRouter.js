@@ -5,9 +5,15 @@ const {
   getSingleProduct,
   updateProduct,
   deleteProduct,
+  createProduct,
 } = require("../controller/productController");
+const { isAdmin, protect } = require("../middleware/authMiddleware");
 const router = express.Router();
 
-router.route("/").get(getAllProducts);
-router.route("/:productId").get(getSingleProduct).delete(deleteProduct).patch(updateProduct);
+router.route("/").post(isAdmin, createProduct).get(getAllProducts);
+router
+  .route("/:productId")
+  .get(getSingleProduct)
+  .delete(protect, isAdmin, deleteProduct)
+  .p(protect, updateProduct);
 module.exports = router;

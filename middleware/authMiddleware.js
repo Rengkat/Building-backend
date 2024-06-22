@@ -14,4 +14,10 @@ const protect = asyncHandler(async (req, res, next) => {
     throw new CustomError("User unauthorized", 401);
   }
 });
-module.exports = protect;
+const isAdmin = asyncHandler(async (req, res, next) => {
+  if (req.user && req.user.isAdmin) {
+    next();
+  }
+  throw new CustomError("Not an admin, unauthorized");
+});
+module.exports = { protect, isAdmin };

@@ -1,6 +1,13 @@
 const asyncHandler = require("express-async-handler");
 const Product = require("../model/productsModel");
 const CustomeError = require("../error/custom-error");
+const createProduct = asyncHandler(async (req, res) => {
+  const product = await Product.create({ ...req.body });
+  if (product) {
+    return res.status(201).json({ message: "Product successfully added", ok: true });
+  }
+  return res.status(401).json({ message: "Product not added", ok: false });
+});
 const getAllProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({});
   if (products) {
@@ -43,4 +50,4 @@ const updateProduct = asyncHandler(async (req, res) => {
   }
   return res.status(404).json({ message: "Product not found", success: false });
 });
-module.exports = { getAllProducts, getSingleProduct, deleteProduct, updateProduct };
+module.exports = { createProduct, getAllProducts, getSingleProduct, deleteProduct, updateProduct };
