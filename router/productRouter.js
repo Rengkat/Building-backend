@@ -10,10 +10,10 @@ const {
 const { isAdmin, protect } = require("../middleware/authMiddleware");
 const router = express.Router();
 
-router.route("/").post(isAdmin, createProduct).get(getAllProducts);
-router
-  .route("/:productId")
-  .get(getSingleProduct)
-  .delete(protect, isAdmin, deleteProduct)
-  .p(protect, updateProduct);
+// router.route("/").post(isAdmin, createProduct).get(getAllProducts);
+// router
+//   .route("/:productId")
+//   .get(getSingleProduct)
+//   .delete(protect, isAdmin, deleteProduct)
+//   .put(protect, updateProduct);
 module.exports = router;

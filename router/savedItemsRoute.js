@@ -7,9 +7,9 @@ const {
 } = require("../controller/savedItemsController");
 const router = express.Router();
 
-router.route("/").get(protectedRoute, getAllUserSaveProduct);
-router
-  .route("/:productId")
-  .get(protectedRoute, getSingleUserSaveProduct)
-  .delete(protectedRoute, deleteSaveProduct);
+// router.route("/").get(protectedRoute, getAllUserSaveProduct);
+// router
+//   .route("/:productId")
+//   .get(protectedRoute, getSingleUserSaveProduct)
+//   .delete(protectedRoute, deleteSaveProduct);
 module.exports = router;

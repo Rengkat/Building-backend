@@ -89,4 +89,35 @@ const updateUser = asyncHandler(async (req, res) => {
     throw new CustomError("Sorry invalid user", 401);
   }
 });
-module.exports = { createUser, loginUser, updateUser, logout, getUserDetail };
+// for dashboard or admin
+const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({});
+  if (users) {
+    return res.status(200).json({ users, ok: true });
+  }
+  return res.status(404).json({ message: "Something went wrong", ok: false });
+});
+const getSingleUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params._id);
+  if (user) {
+    return res.status(200).json({ user, ok: true });
+  }
+  return res.status(401).json({ message: "User not found", ok: false });
+});
+const deleteUser = asyncHandler(async (req, res) => {
+  const user = await User.findByIdAndDelete(req.user.userId);
+  if (user) {
+    return res.status(200).json({ message: "User deleted", ok: true });
+  }
+  return res.status(404).json({ message: "User not found", ok: false });
+});
+module.exports = {
+  getAllUsers,
+  getSingleUser,
+  createUser,
+  loginUser,
+  updateUser,
+  logout,
+  getUserDetail,
+  deleteUser,
+};

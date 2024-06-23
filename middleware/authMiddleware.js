@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
 const CustomError = require("../error/custom-error");
 const User = require("../model/userModel");
-const protect = asyncHandler(async (req, res, next) => {
+const protectedRoute = asyncHandler(async (req, res, next) => {
   let jwtToken;
   jwtToken = req.cookies.token;
   if (jwtToken) {
@@ -20,4 +20,4 @@ const isAdmin = asyncHandler(async (req, res, next) => {
   }
   throw new CustomError("Not an admin, unauthorized");
 });
-module.exports = { protect, isAdmin };
+module.exports = { protectedRoute, isAdmin };
