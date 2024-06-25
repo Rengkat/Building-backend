@@ -7,6 +7,8 @@ const notFound = require("./middleware/notFound");
 const connectDB = require("./db/connectDB");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const helmet = require("helmet");
+// const xss = require("xss");
 require("dotenv").config();
 
 const app = express();
@@ -15,6 +17,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors());
+app.use(helmet());
+// app.use(xss());
 app.use("/api/users", users);
 app.use("/api/products", products);
 app.use("/api/user/cart", cart);

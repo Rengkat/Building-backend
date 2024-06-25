@@ -11,7 +11,6 @@ const ProductsSchema = new mongoose.Schema(
     rating: { type: Number, required: true, default: 0 },
     brand: { type: String, required: true },
     inStock: { type: Number, required: true, default: 0 },
-    isAdmin: { type: Boolean, required: true, default: false },
   },
   { timestamps: true }
 );

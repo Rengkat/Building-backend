@@ -7,13 +7,13 @@ const {
   deleteProduct,
   createProduct,
 } = require("../controller/productController");
-const { isAdmin, protect } = require("../middleware/authMiddleware");
+const { isAdmin, protectedRoute } = require("../middleware/authMiddleware");
 const router = express.Router();
 
-// router.route("/").post(isAdmin, createProduct).get(getAllProducts);
-// router
-//   .route("/:productId")
-//   .get(getSingleProduct)
-//   .delete(protect, isAdmin, deleteProduct)
-//   .put(protect, updateProduct);
+router.route("/").post(protectedRoute, isAdmin, createProduct).get(getAllProducts);
+router
+  .route("/:productId")
+  .get(getSingleProduct)
+  .delete(protectedRoute, isAdmin, deleteProduct)
+  .patch(protectedRoute, updateProduct);
 module.exports = router;
