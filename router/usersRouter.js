@@ -11,9 +11,13 @@ const {
 } = require("../controller/userController");
 const { protectedRoute, isAdmin } = require("../middleware/authMiddleware");
 const router = express.Router();
-router.route("/").post(createUser).get(isAdmin, getAllUsers);
-router.route("/userId").delete(isAdmin, deleteUser).get(isAdmin, getSingleUser);
+router.route("/profile").patch(protectedRoute, updateUser).get(protectedRoute, getUserDetail);
+router.route("/").get(protectedRoute, isAdmin, getAllUsers);
+router.route("/register").post(createUser);
 router.route("/logout").post(logout);
 router.route("/login").post(loginUser);
-router.route("/profile").put(protectedRoute, updateUser).get(protectedRoute, getUserDetail);
+router
+  .route("/:userId")
+  .delete(protectedRoute, isAdmin, deleteUser)
+  .get(protectedRoute, isAdmin, getSingleUser);
 module.exports = router;

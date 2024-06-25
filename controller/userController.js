@@ -61,6 +61,7 @@ const getUserDetail = asyncHandler(async (req, res) => {
     userSurname: req.user.surname,
     phone: req.user.phone,
     email: req.user.email,
+    isAdmin: req.user.isAdmin,
   };
   res.status(200).json(user);
 });
@@ -77,6 +78,8 @@ const updateUser = asyncHandler(async (req, res) => {
     user.firstName = req.body.firstName || user.firstName;
     user.surname = req.body.surname || user.surname;
     user.phone = req.body.phone || user.phone;
+    user.isAdmin = req.body.isAdmin || user.isAdmin;
+    user.password = req.body.password || user.password;
     //update user
     const updatedUser = await user.save();
     res.status(200).json({
@@ -84,6 +87,7 @@ const updateUser = asyncHandler(async (req, res) => {
       firstName: updatedUser.firstName,
       surname: updatedUser.surname,
       phone: updatedUser.phone,
+      isAdmin: updatedUser.isAdmin,
     });
   } else {
     throw new CustomError("Sorry invalid user", 401);
@@ -91,14 +95,14 @@ const updateUser = asyncHandler(async (req, res) => {
 });
 // for dashboard or admin
 const getAllUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({});
+  const users = await User.find({}).select("-password");
   if (users) {
     return res.status(200).json({ users, ok: true });
   }
   return res.status(404).json({ message: "Something went wrong", ok: false });
 });
 const getSingleUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params._id);
+  const user = await User.findById(req.params.userId).select("-password");
   if (user) {
     return res.status(200).json({ user, ok: true });
   }

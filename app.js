@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors());
-app.use("/api/user", users);
+app.use("/api/users", users);
 app.use("/api/products", products);
 app.use("/api/user/cart", cart);
 app.use("/api/user/saveItems", saveItems);
