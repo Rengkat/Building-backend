@@ -22,10 +22,14 @@ const getSingleCartProduct = asyncHandler(async (req, res) => {
   return res.status(404).json({ message: "Product not found", ok: false });
 });
 const addCartProduct = asyncHandler(async (req, res) => {
-  req.body.user = user._id;
-  const product = await CartItem.create(...req.body);
-  if (product) {
-    return res.status(201).json({ message: "Product added to cart", ok: true });
+  const user = req.user;
+  const { product, quantity } = req.body;
+  const cartItem = await CartItem.create({ user: user._id, product, quantity });
+  if (cartItem) {
+    const populatedCartItem = await cartItem.populate("product");
+    return res
+      .status(201)
+      .json({ message: "Product added to cart", ok: true, cartItem: populatedCartItem });
   }
   return res.status(401).json({ message: "Something went wrong" });
 });

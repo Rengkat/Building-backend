@@ -9,12 +9,27 @@ const createProduct = asyncHandler(async (req, res) => {
   return res.status(401).json({ message: "Product not added", ok: false });
 });
 const getAllProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({});
-  if (products) {
-    return res.status(200).json(products);
+  let result = Product.find({});
+  // set pagination
+  const pageNumber = Number(req.query.pageNumber) || 1;
+  const pageLimit = Number(req.query.pageLimit) || 10;
+  const skipPage = (pageNumber - 1) * pageLimit;
+  result = result.skip(skipPage).limit(pageLimit);
+  const products = await result;
+  const totalNumOfProducts = await Product.countDocuments({});
+  const numOfPages = Math.ceil(totalNumOfProducts / pageLimit);
+
+  if (products.length > 0) {
+    return res.status(200).json({
+      products,
+      totalNumOfProducts,
+      numOfPages,
+    });
+  } else {
+    return res.status(404).json({ message: "No products found" });
   }
-  return res.status(401).json({ message: "No products" });
 });
+
 const getSingleProduct = asyncHandler(async (req, res) => {
   const product = await Product.findOne({ _id: req.params.productId });
 
