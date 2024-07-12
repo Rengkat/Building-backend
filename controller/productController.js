@@ -9,7 +9,7 @@ const createProduct = asyncHandler(async (req, res) => {
   return res.status(401).json({ message: "Product not added", ok: false });
 });
 const getAllProducts = asyncHandler(async (req, res) => {
-  let result = Product.find({});
+  let result = Product.find({}, "_id name image price inStock rating, category");
   // set pagination
   const pageNumber = Number(req.query.pageNumber) || 1;
   const pageLimit = Number(req.query.pageLimit) || 10;
@@ -34,7 +34,7 @@ const getSingleProduct = asyncHandler(async (req, res) => {
   const product = await Product.findOne({ _id: req.params.productId });
 
   if (product) {
-    return res.status(200).json({ ok: true, product });
+    return res.status(200).json({ ok: true, product, src: req.productImage });
   } else {
     return res.status(404).json({ message: "No product found", ok: false });
   }
