@@ -22,11 +22,15 @@ const uploadLocalProductImage = async (req, res) => {
   return res.status(201).json({ image: { src: `/uploads/${productImage.name}` } });
 };
 const uploadProductImage = async (req, res) => {
-  const result = await cloudinary.uploader.upload(req.files.image.tempFilePath, {
-    use_filename: true,
-    folder: "Building-products-uploads",
-  });
-  fs.unlinkSync(req.files.image.tempFilePath);
-  return res.status(201).json({ img: { src: result.secure_url } });
+  try {
+    const result = await cloudinary.uploader.upload(req.files.image.tempFilePath, {
+      use_filename: true,
+      folder: "Building-products-uploads",
+    });
+    fs.unlinkSync(req.files.image.tempFilePath);
+    return res.status(201).json({ img: { src: result.secure_url } });
+  } catch (error) {
+    throw new Error("Image upload failed");
+  }
 };
 module.exports = { uploadProductImage };

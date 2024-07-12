@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Product = require("../model/productsModel");
 const CustomeError = require("../error/custom-error");
+// const { uploadProductImage } = require("./uploadController");
 const createProduct = asyncHandler(async (req, res) => {
   const product = await Product.create({ ...req.body });
   if (product) {
