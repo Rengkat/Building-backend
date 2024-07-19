@@ -11,7 +11,7 @@ const getAllCartProducts = asyncHandler(async (req, res) => {
   }
 });
 const getSingleCartProduct = asyncHandler(async (req, res) => {
-  const product = await CartItem.findById(req.params._id);
+  const product = await CartItem.findById(req.params.productId).populate("product");
   if (product) {
     return res.status(200).json({ product, ok: true });
   }
