@@ -16,14 +16,18 @@ const saveProduct = asyncHandler(async (req, res) => {
   }
 });
 const getAllUserSaveProduct = asyncHandler(async (req, res) => {
-  const products = await SavedItems.find({ user: req.user._id }).populate("product");
+  const products = await SavedItems.find({ user: req.user._id })
+    .populate("product")
+    .select("product");
   if (products.length > 0) {
     return res.status(200).json({ products, ok: true });
   }
   return res.status(401).json({ message: "No products", ok: false });
 });
 const getSingleUserSaveProduct = asyncHandler(async (req, res) => {
-  const product = await SavedItems.findById(req.params.productId).populate("product");
+  const product = await SavedItems.findById(req.params.productId)
+    .populate("product")
+    .select("product");
 
   if (product) {
     return res.status(200).json({ ok: true, product });
