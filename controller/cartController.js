@@ -3,6 +3,7 @@ const asyncHandler = require("express-async-handler");
 
 const getAllCartProducts = asyncHandler(async (req, res) => {
   const user = req.user._id;
+
   const cartItems = await CartItem.find({ user }).populate("product");
   if (cartItems.length > 0) {
     res.status(200).json({ ok: true, cartItems });
@@ -19,29 +20,25 @@ const getSingleCartProduct = asyncHandler(async (req, res) => {
 });
 const addCartProduct = asyncHandler(async (req, res) => {
   const user = req.user._id;
-  const { productId, quantity } = req.body;
-
-  // Use findOne to get a single document
+  const { productId } = req.body;
   const existedInCart = await CartItem.findOne({ user, product: productId });
-
   if (existedInCart) {
-    existedInCart.quantity += quantity || 1;
+    existedInCart.quantity += 1;
     await existedInCart.save();
     res.status(200).json({ existedInCart, ok: true });
   } else {
-    const newCartItem = new CartItem({
+    const newCartItem = await CartItem.create({
       user,
       product: productId,
-      quantity: quantity || 1,
+      quantity: 1,
     });
-    await newCartItem.save();
     res.status(201).json({ newCartItem, ok: true });
   }
 });
 
 const deleteCartProduct = asyncHandler(async (req, res) => {
   try {
-    const product = await CartItem.findByIdAndDelete(req.params.productId);
+    const product = await CartItem.findByIdAndDelete(req.body.productId);
 
     if (product) {
       return res.status(200).json({ message: "Product removed from cart", ok: true });
@@ -54,7 +51,7 @@ const deleteCartProduct = asyncHandler(async (req, res) => {
 });
 const updateProductQuantity = asyncHandler(async (req, res) => {
   const { quantity } = req.body;
-  const productId = req.params.productId || req.body._id;
+  const productId = req.params.productId || req.body.productId;
 
   if (quantity < 1) {
     const product = await CartItem.findByIdAndDelete(productId);

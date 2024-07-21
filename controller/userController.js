@@ -28,19 +28,15 @@ const createUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  // Check if email and password are provided
   if (!email || !password) {
     return res.status(400).json({ message: "Please enter all fields" });
   }
 
-  // Find the user by email (case insensitive)
   const user = await User.findOne({ email: { $regex: new RegExp(email, "i") } });
 
-  // Check if user exists and password matches
   if (user && (await user.matchedPassword(password))) {
     const token = generateToken(res, user._id);
 
-    // Construct the response with only the necessary fields
     return res.status(201).json({
       message: "User successfully logged in",
       ok: true,
