@@ -71,7 +71,14 @@ const updateProductQuantity = asyncHandler(async (req, res) => {
     }
   }
 });
+const clearAllCart = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  await CartItem.deleteMany({ user: userId });
+
+  res.status(200).json({ message: "All cart items cleared successfully" });
+});
 module.exports = {
+  clearAllCart,
   addCartProduct,
   getAllCartProducts,
   getSingleCartProduct,

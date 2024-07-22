@@ -36,7 +36,7 @@ const getSingleUserSaveProduct = asyncHandler(async (req, res) => {
   }
 });
 const deleteSaveProduct = asyncHandler(async (req, res) => {
-  const deletedProduct = await SavedItems.findByIdAndDelete(req.params.productId);
+  const deletedProduct = await SavedItems.findByIdAndDelete(req.body.productId);
 
   if (deletedProduct) {
     res.status(200).json({ message: "Product deleted successfully", ok: true });
@@ -44,7 +44,14 @@ const deleteSaveProduct = asyncHandler(async (req, res) => {
     res.status(404).json({ message: "Product not found", ok: false });
   }
 });
+const deleteAllSaveProduct = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  await CartItem.deleteMany({ user: userId });
+
+  res.status(200).json({ message: "All cart items cleared successfully" });
+});
 module.exports = {
+  deleteAllSaveProduct,
   saveProduct,
   getAllUserSaveProduct,
   getSingleUserSaveProduct,
