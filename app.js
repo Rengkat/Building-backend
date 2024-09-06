@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("node:path");
 const users = require("./router/usersRouter");
 const products = require("./router/productRouter");
 const cart = require("./router/cartRouter");
@@ -24,6 +25,12 @@ cloudniary.config({
 });
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
+
+// Set the default route to serve the docgen HTML file
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 app.use(cookieParser());
 const corsOptions = {
   origin: "http://localhost:3000",
