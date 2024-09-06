@@ -5,7 +5,7 @@ const User = require("../model/userModel");
 const CustomError = require("../error/custom-error");
 const createUser = asyncHandler(async (req, res) => {
   const { firstName, surname, phone, email, password } = req.body;
-
+  console.log({ firstName, surname, phone, email, password });
   if (!firstName || !surname || !phone || !email || !password) {
     throw new CustomError("Please enter fields", 400);
   }
